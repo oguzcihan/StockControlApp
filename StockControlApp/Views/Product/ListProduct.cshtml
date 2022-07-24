@@ -1,0 +1,67 @@
+﻿@{
+    ViewData["Title"] = "Ürün Listesi";
+}
+@model StockControlApp.Models.ViewModels.ProductListViewModel
+
+<div class="col-lg-12">
+    <div class="card">
+
+        @if (TempData["addProductSuccess"] != null)
+        {
+            <div class="alert alert-success" role="alert">
+                @TempData["addProductSuccess"]
+            </div>
+        }else if (TempData["updateProductSuccess"] != null)
+        {
+            <div class="alert alert-warning" role="alert">
+                @TempData["updateProductSuccess"]
+            </div>
+        }else if (TempData["deleteProductSuccess"] != null)
+        {
+            <div class="alert alert-danger" role="alert">
+                @TempData["deleteProductSuccess"]
+            </div>
+        }
+
+        <div class="card-body">
+            <h4 class="card-title text-center">Ürün Listesi</h4>
+            <hr />
+            <div class="table-responsive">
+                <table class="table table-responsive-md">
+                    <thead>
+                    <tr>
+
+                        <th><strong>No</strong></th>
+                        <th><strong>Ürün Adı</strong></th>
+                        <th><strong>Adet</strong></th>
+                        <th><strong>Br. Fiyatı(₺)</strong></th>
+
+                    </tr>
+                    </thead>
+                    <tbody>
+                    @foreach (var product in Model.Products)
+                    {
+                        <tr>
+
+                            <td><strong>@product.Id</strong></td>
+                            <td>@product.ProductName</td>
+                            <td>@product.Amount</td>
+                            <td>@product.Price ₺</td>
+
+                            <td>
+                                <div class="d-flex">
+                                    <a title="Düzenle" asp-controller="Product" asp-action="UpdateProduct" asp-route-id="@product.Id" class="btn btn-primary shadow btn-xs sharp me-1"><i class="fas fa-pencil-alt"></i></a>
+                                    <a title="Sil" asp-controller="Product" asp-action="DeleteProduct" asp-route-id="@product.Id" onclick="return confirm('Ürünü silmek istiyor musunuz?')" class="btn btn-danger shadow btn-xs sharp me-1"><i class="fa fa-trash"></i></a>
+                                    @*ürün çıkış yaparken o ürünün id si ile gitmesi sağlanıp o ürün üzerinden çıkış yapılmalı*@
+                                    <a title="Ürün Çıkış" href="#" class="btn btn-info shadow btn-xs sharp"><i class="fa fa-info"></i></a>
+                                </div>
+                            </td>
+                        </tr>
+                    }
+
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>

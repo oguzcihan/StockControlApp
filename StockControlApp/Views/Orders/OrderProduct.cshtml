@@ -1,0 +1,40 @@
+﻿@{
+    ViewData["Title"] = "Ürün Çıkış";
+}
+@model StockControlApp.Models.ViewModels.OrderViewModel
+<div class="col-lg-12">
+    <div>
+        <div class="card">
+            <div class="card-body ">
+                <h4 class="text-center">Ürün Çıkış Formu</h4>
+                <hr />
+                <div class="tab-content ">
+                    <div class="tab-pane fade active show ">
+                        <div class="pt-3">
+
+                            <form method="POST" asp-controller="Orders" asp-action="OrderProduct">
+                                <div class="form-group col-md-12">
+                                    <label>Müşteri Adı:</label>
+                                    <input type="text" name="employeeName" placeholder="Müşteri adı giriniz" class="form-control">
+                                </div>
+                                <div class="form-group col-md-12">
+                                    <label>Ürün Seçiniz:</label>
+                                    <select class="form-control"asp-for="Order.ProductId" asp-items="@Model.ProductSelectList">
+                                        <option selected>Seçiniz</option>
+                                    </select>
+                                </div>
+                                <div class="form-group col-md-12">
+                                    <label>Ürün Adedi:</label>
+                                    <input type="number" name="productAmount" placeholder="Ürün adedi giriniz" class="form-control">
+                                </div>
+                                <div class="text-center">
+                                    <input style="margin-top: 10px; width: 150px;" type="submit" value="Kaydet" class="btn btn-primary">
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
