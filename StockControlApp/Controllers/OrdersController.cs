@@ -15,15 +15,42 @@ namespace StockControlApp.Controllers
             orderService = _orderService;
         }
         [HttpGet]
-        public IActionResult OrderProduct(OrderViewModel orderViewModel)
+        public IActionResult OrderProduct()
         {
+            var orderViewModel = new OrderViewModel();
             var products = orderService.GetProductList();
-            orderViewModel.ProductSelectList = new SelectList(products, "Id", "ProductName","Seçiniz");
+            ViewBag.ListProductName = new SelectList(products, "Id", "ProductName");
             return View(orderViewModel);
         }
         [HttpPost]
-        public IActionResult OrderProduct(Order order)
+        public IActionResult OrderProduct(OrderViewModel orderViewModel)
         {
+            try
+            {
+                Order order = new Order();
+                if (ModelState.IsValid)
+                {
+                    order.EmployeeName = orderViewModel.EmployeeName;
+                    order.OrderAmount=orderViewModel.OrderAmount;
+                    order.ProductId = orderViewModel.ProductId;
+                    var result = orderService.Add(order);
+                    if (result.Success)
+                    {
+                        TempData["addOrderSuccess"] = result.Message;
+                        return RedirectToAction("ListProduct","Product");
+                    }
+                    else if(result.Success==false)
+                    {
+                        TempData["productOverAmount"] = result.Message;
+                        return RedirectToAction("OrderProduct");
+                    }
+                }
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine(e);
+                throw;
+            }
             return View();
         }
 

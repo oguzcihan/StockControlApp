@@ -5,7 +5,9 @@ namespace StockControlApp.Models.ViewModels
 {
     public class OrderViewModel
     {
-        public Order Order { get; set; }
-        public SelectList ProductSelectList { get; set; }
+        public String EmployeeName { get; set; }
+        public int OrderAmount { get; set; }
+        public int ProductId { get; set; }
+        
     }
 }

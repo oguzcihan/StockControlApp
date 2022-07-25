@@ -34,7 +34,7 @@ namespace StockControl.Business.Concrete
             {
                 stockDataContext.Products.Add(product);
                 stockDataContext.SaveChanges();
-                return new SuccessResult(Messages.ProductAdded);
+                return new SuccessResult(true, Messages.ProductAdded);
             }
             catch (Exception e)
             {
@@ -51,7 +51,7 @@ namespace StockControl.Business.Concrete
         {
             stockDataContext.Entry(product).State = EntityState.Modified;
             stockDataContext.SaveChanges();
-            return new SuccessResult(Messages.ProductUpdated);
+            return new SuccessResult(true, Messages.ProductUpdated);
         }
         /// <summary>
         /// Product silme işlemi
@@ -62,7 +62,7 @@ namespace StockControl.Business.Concrete
         {
             stockDataContext.Remove(product);
             stockDataContext.SaveChanges();
-            return new SuccessResult(Messages.ProductDeleted);
+            return new SuccessResult(true, Messages.ProductDeleted);
         }
         /// <summary>
         /// Tüm productları listelemek için kullanıldı
