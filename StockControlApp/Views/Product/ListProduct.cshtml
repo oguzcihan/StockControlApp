@@ -59,8 +59,7 @@
                                 <div class="d-flex">
                                     <a title="Düzenle" asp-controller="Product" asp-action="UpdateProduct" asp-route-id="@product.Id" class="btn btn-primary shadow btn-xs sharp me-1"><i class="fas fa-pencil-alt"></i></a>
                                     <a title="Sil" asp-controller="Product" asp-action="DeleteProduct" asp-route-id="@product.Id" onclick="return confirm('Ürünü silmek istiyor musunuz?')" class="btn btn-danger shadow btn-xs sharp me-1"><i class="fa fa-trash"></i></a>
-                                    @*ürün çıkış yaparken o ürünün id si ile gitmesi sağlanıp o ürün üzerinden çıkış yapılmalı*@
-                                    <a title="Ürün Çıkış" href="#" class="btn btn-info shadow btn-xs sharp"><i class="fa fa-info"></i></a>
+                                    <a title="Ürün Çıkış" asp-controller="Orders" asp-action="OrderProduct" asp-route-id="@product.Id" class="btn btn-info shadow btn-xs sharp"><i class="fa fa-info"></i></a>
                                 </div>
                             </td>
                         </tr>

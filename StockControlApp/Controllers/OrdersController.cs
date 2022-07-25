@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using StockControl.Business.Abstract;
 using StockControl.Entity.Concrete;
+using StockControlApp.Models;
 using StockControlApp.Models.ViewModels;
 
 namespace StockControlApp.Controllers
@@ -15,12 +16,36 @@ namespace StockControlApp.Controllers
             orderService = _orderService;
         }
         [HttpGet]
-        public IActionResult OrderProduct()
+        public IActionResult OrderProduct(int? id)
         {
-            var orderViewModel = new OrderViewModel();
-            var products = orderService.GetProductList();
-            ViewBag.ListProductName = new SelectList(products, "Id", "ProductName");
-            return View(orderViewModel);
+            try
+            {
+                if (id != null)
+                {
+                    var entity = orderService.GetByIdOrder((int)id);
+                    var model = new OrderViewModel();
+                    foreach (var itemProduct in entity)
+                    {
+                        model.ProductId = itemProduct.Id;
+                        model.ProductName = itemProduct.ProductName;
+                    }
+
+                    return View(model);
+                }
+                else
+                {
+                    var orderViewModel = new OrderViewModel();
+                    var products = orderService.GetProductList();
+                    ViewBag.ListProductName = new SelectList(products, "Id", "ProductName");
+                    return View(orderViewModel);
+                }
+            }
+            catch (Exception e)
+            {
+                return View();
+            }
+           
+            
         }
         [HttpPost]
         public IActionResult OrderProduct(OrderViewModel orderViewModel)
@@ -37,7 +62,7 @@ namespace StockControlApp.Controllers
                     if (result.Success)
                     {
                         TempData["addOrderSuccess"] = result.Message;
-                        return RedirectToAction("ListProduct","Product");
+                        return RedirectToAction("ListOrder");
                     }
                     else if(result.Success==false)
                     {
@@ -53,15 +78,36 @@ namespace StockControlApp.Controllers
             }
             return View();
         }
-
+        [HttpGet]
         public IActionResult ListOrder()
         {
-            return View();
+            var orderViewModel=new OrderListViewModel();
+            var result = orderService.GetList();
+            if (result.Success)
+            {
+                orderViewModel.OrdersList = result.Data;
+                return View(orderViewModel);
+            }
+            return View(result.Message);
         }
 
-        public IActionResult DeleteOrder()
+        public IActionResult DeleteOrder(Order order)
         {
-            return RedirectToAction("ListOrder");
+            try
+            {
+                var result = orderService.Delete(order);
+                if (result.Success)
+                {
+                    TempData["deleteOrderSuccess"] = result.Message;
+                }
+                return RedirectToAction("ListOrder");
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine(e);
+                throw new Exception("Hata");
+            }
+           
         }
     }
 }
