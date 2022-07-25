@@ -1,5 +1,5 @@
 # User Guide
-- Proje clone işlemi tamamlandıktan sonra Visual Studio 2022 Community Idesiye proje açılır. 
+- Proje master branch inden clone işlemi tamamlandıktan sonra Visual Studio 2022 Community Idesiye proje açılır. 
 - Proje açıldıktan sonra Core katmanı içerisinde bulunan Constants klasöründen Constants Class'ı açılmalı ve buradaki database connection string alanını kendi database adresinize göre ayarlamalısınız. Database yolu ayarlandıktan sonra sırasıyla:
 
 - Visual Studio da Package Manager Console açılır.
