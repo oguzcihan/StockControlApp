@@ -53,7 +53,7 @@ namespace StockControlApp.Controllers
             try
             {
                 Order order = new Order();
-                if (ModelState.IsValid)
+                if (ModelState.IsValid && orderViewModel.EmployeeName!=null &&orderViewModel.OrderAmount==0)
                 {
                     order.EmployeeName = orderViewModel.EmployeeName;
                     order.OrderAmount=orderViewModel.OrderAmount;
@@ -76,7 +76,7 @@ namespace StockControlApp.Controllers
                 Console.WriteLine(e);
                 throw;
             }
-            return View();
+            return BadRequest("Hatalı İşlem");
         }
         [HttpGet]
         public IActionResult ListOrder()

@@ -49,7 +49,7 @@ namespace StockControlApp.Controllers
             {
                 return View("AddProduct", productView);
             }
-            return View("AddProduct");
+            return BadRequest("Hatalı İşlem");
         }
 
         [HttpGet]
@@ -97,7 +97,7 @@ namespace StockControlApp.Controllers
             {
                 throw new Exception("Hata:"+e);
             }
-            return View("ListProduct");
+            return BadRequest("Hatalı İşlem");
         }
 
         public IActionResult DeleteProduct(Product product)
