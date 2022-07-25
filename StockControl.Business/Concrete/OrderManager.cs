@@ -11,7 +11,7 @@ using StockControl.Entity.Concrete;
 
 namespace StockControl.Business.Concrete
 {
-    public class OrderManager:IOrderService
+    public class OrderManager : IOrderService
     {
         private readonly StockDataContext stockDataContext;
         public OrderManager(StockDataContext _stockDataContext)
@@ -25,9 +25,38 @@ namespace StockControl.Business.Concrete
         /// <returns></returns>
         public IResult Add(Order order)
         {
+            int localAmount;
+            var product = stockDataContext.Products.Where(a => a.Id == order.ProductId).ToList();
+            //Any() kaynak dizi herhangi bir eleman içeriyorsa true döner
+            if (product.Any())
+            {
+                foreach (var item in product)
+                {
+                    if (item.Amount != 0)
+                    {
+                        localAmount=item.Amount-order.OrderAmount;
+                        if (localAmount == 0)
+                        {
+                            return new SuccessResult(false,Messages.ProductOverAmount);
+                        }
+                        else if(localAmount<0)
+                        {
+                            return new SuccessResult(false, Messages.ProductOverAmount);
+                        }
+
+                        item.Amount = localAmount;
+                    }
+                    else
+                    {
+                        return new SuccessResult(false,Messages.ProductOverAmount);
+                    }
+
+                }
+            }
+
             stockDataContext.Orders.Add(order);
             stockDataContext.SaveChanges();
-            return new SuccessResult(Messages.ProductOrder);
+            return new SuccessResult(true,Messages.ProductOrder);
         }
         /// <summary>
         /// Order için silme işlemi
@@ -38,7 +67,7 @@ namespace StockControl.Business.Concrete
         {
             stockDataContext.Orders.Remove(order);
             stockDataContext.SaveChanges();
-            return new SuccessResult(Messages.OrderDelete);
+            return new SuccessResult(true,Messages.OrderDelete);
         }
         /// <summary>
         /// Order listesi döndürüldü
