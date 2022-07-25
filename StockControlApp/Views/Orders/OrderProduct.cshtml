@@ -25,9 +25,17 @@
                                 </div>
                                 <div class="form-group col-md-12">
                                     <label>Ürün Seçiniz:</label>
-                                    <select class="form-control" asp-for="ProductId" asp-items="@ViewBag.ListProductName">
-                                        <option selected disabled>Seçiniz</option>
-                                    </select>
+                                    @if (@Model.ProductName != null)
+                                    {
+                                        <input type="text" asp-for="ProductName" name="productName" placeholder="Müşteri adı giriniz" class="form-control" readonly>
+                                        <input type="hidden" asp-for="ProductId"/>
+                                    }
+                                    else
+                                    {
+                                        <select class="form-control" asp-for="ProductId" asp-items="@ViewBag.ListProductName">
+                                            <option selected disabled>Seçiniz</option>
+                                        </select>
+                                    }
                                 </div>
                                 <div class="form-group col-md-12">
                                     <label>Ürün Adedi:</label>

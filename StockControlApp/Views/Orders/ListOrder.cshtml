@@ -1,7 +1,55 @@
-﻿
-@{
-    ViewData["Title"] = "ListOrder";
+﻿@{
+    ViewData["Title"] = "Ürün Çıkış Listesi";
 }
+@model StockControlApp.Models.ViewModels.OrderListViewModel
 
-<h1>ListOrder</h1>
+<div class="col-lg-12">
+    <div class="card">
+
+        @if (TempData["addOrderSuccess"] != null)
+        {
+            <div class="alert alert-warning" role="alert">
+                @TempData["addOrderSuccess"]
+            </div>
+        }
+
+        <div class="card-body">
+            <h4 class="card-title text-center">Ürün Çıkış Listesi</h4>
+            <hr />
+            <div class="table-responsive">
+                <table class="table table-responsive-md">
+                    <thead>
+                    <tr>
+
+                        <th><strong>No</strong></th>
+                        <th><strong>Müşteri Adı</strong></th>
+                        <th><strong>Adet</strong></th>
+                        <th><strong>Br. Fiyatı(₺)</strong></th>
+
+                    </tr>
+                    </thead>
+                    <tbody>
+                    @foreach (var order in Model.OrdersList)
+                    {
+                        <tr>
+
+                            <td><strong>@order.Id</strong></td>
+                            <td>@order.EmployeeName</td>
+                            <td>@order.OrderAmount</td>
+                            <td>@order.Product.Price ₺</td>
+
+                            <td>
+                                <div class="d-flex">
+                                    <a title="Sil" asp-controller="Orders" asp-action="DeleteOrder" asp-route-id="@order.Id" onclick="return confirm('Ürünü silmek istiyor musunuz?')" class="btn btn-danger shadow btn-xs sharp me-1"><i class="fa fa-trash"></i></a>
+                                </div>
+                            </td>
+                        </tr>
+                    }
+
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
 

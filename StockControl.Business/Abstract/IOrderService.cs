@@ -14,5 +14,11 @@ namespace StockControl.Business.Abstract
         IResult Delete(Order order);
         IDataResult<List<Order>> GetList();
         List<Product> GetProductList();
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="productId"></param>
+        /// <returns></returns>
+        List<Product> GetByIdOrder(int productId);
     }
 }

@@ -49,26 +49,35 @@ namespace StockControlApp.Controllers
             {
                 return View("AddProduct", productView);
             }
-            return View("AddProduct");
+            return BadRequest("Hatalı İşlem");
         }
 
         [HttpGet]
         public IActionResult UpdateProduct(int? id)
         {
-            if (id == null)
+            try
             {
-                return NotFound();
+                if (id == null)
+                {
+                    return NotFound();
+                }
+
+                var entity = productService.GetById((int)id);
+                var model = new ProductViewModel()
+                {
+                    ProductName = entity.Data.ProductName,
+                    Price = entity.Data.Price,
+                    Amount = entity.Data.Amount,
+
+                };
+                return View(model);
             }
-
-            var entity = productService.GetById((int)id);
-            var model = new ProductViewModel()
+            catch (Exception e)
             {
-                ProductName = entity.Data.ProductName,
-                Price = entity.Data.Price,
-                Amount = entity.Data.Amount,
-
-            };
-            return View(model);
+                Console.WriteLine(e);
+                throw new Exception("Hata");
+            }
+            
         }
 
         [HttpPost]
@@ -88,17 +97,26 @@ namespace StockControlApp.Controllers
             {
                 throw new Exception("Hata:"+e);
             }
-            return View("ListProduct");
+            return BadRequest("Hatalı İşlem");
         }
 
         public IActionResult DeleteProduct(Product product)
         {
-            var result= productService.Delete(product);
-            if (result.Success)
+            try
             {
-                TempData["deleteProductSuccess"] = result.Message;
+                var result = productService.Delete(product);
+                if (result.Success)
+                {
+                    TempData["deleteProductSuccess"] = result.Message;
+                }
+                return RedirectToAction("ListProduct");
             }
-            return RedirectToAction("ListProduct");
+            catch (Exception e)
+            {
+                Console.WriteLine(e);
+                throw new Exception("Hata");
+            }
+            
         }
 
         [HttpGet]
@@ -113,7 +131,7 @@ namespace StockControlApp.Controllers
                 return View(viewModel);
             }
 
-            return BadRequest(result.Message);
+            return View(result.Message);
 
 
         }

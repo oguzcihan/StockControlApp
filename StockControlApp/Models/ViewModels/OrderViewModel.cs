@@ -8,6 +8,7 @@ namespace StockControlApp.Models.ViewModels
         public String EmployeeName { get; set; }
         public int OrderAmount { get; set; }
         public int ProductId { get; set; }
+        public String ProductName { get; set; }
         
     }
 }
